@@ -5,10 +5,24 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from plyer import notification
 import pandas as pd
+import os, shutil, uuid
+from datetime import datetime
 
 # Load trained model
 model = joblib.load("sample_model.pkl")
+def quarantine_file(file_path):
+    if not os.path.exists("sandbox"):
+        os.makedirs("sandbox")
+    unique_name = f"{uuid.uuid4().hex}.txt"
+    dest_path = os.path.join("sandbox", unique_name)
+    shutil.copy(file_path, dest_path)
+    print(f"🚨 Quarantined: {dest_path}")
+#for quarantine logging
+def log_quarantine(file_path, prediction):
+    with open("sandbox/log.txt", "a") as log:
+        log.write(f"{datetime.now()} | {file_path} | {prediction}\n")
 
+#main watcher handler
 class WatcherHandler(FileSystemEventHandler):
     def on_created(self, event):
         if not event.is_directory and event.src_path.endswith(".txt"):
@@ -40,7 +54,9 @@ class WatcherHandler(FileSystemEventHandler):
                 title="⚠️ Scam Alert",
                 message="Suspicious message detected",
                 timeout=5
-)
+               )
+                quarantine_file(event.src_path)
+                log_quarantine(event.src_path, prediction)
 
                 
 
