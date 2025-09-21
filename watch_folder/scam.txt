@@ -1,0 +1,6 @@
+Your UPI will be deactivated. Click http://fake.link to verify",1
+"Congratulations! You won Rs. 50,000. Reply with your UPI to claim",1
+"Aadhaar KYC pending. Update immediately: http://aadhar-fake",1
+"Bank alert: unauthorized debit of Rs. 2000. Call 1800-xxx-xxxx",1
+"Loan approved! Send your bank details to get funds",1
+"Claim your free iPhone now! Limited time offer",1
